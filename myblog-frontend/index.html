@@ -10,6 +10,16 @@
         margin: 0;
         padding: 0;
       }
+
+      a.router-link-active,
+      a.router-link-exact-active,
+      a {
+        color: inherit;        /* 继承父元素字体颜色 */
+        text-decoration: none; /* 去掉下划线 */
+        cursor: pointer;       /* 保持手型 */
+        outline: none;         /* 去掉 focus 轮廓（可选） */
+        display: inline-block; /* 或 block / flex，按需求来 */
+      }
     </style>
   </head>
   <body>
