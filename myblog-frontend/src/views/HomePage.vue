@@ -2,13 +2,16 @@
 
 <template>
   <div class="background-box">
-    <div class="header">
+    <div class="header-box">
       <div class="header-left">
         <div>
           <router-link to="/">首页</router-link>
         </div>|
         <div>
           <router-link to="articles">文章列表</router-link>
+        </div>|
+        <div>
+          动态广场
         </div>
       </div>
       <div class="header-center">
@@ -37,7 +40,8 @@
           </div>
           <div class="text-card">
             <h1>硬件</h1>
-            <p>学习基础电路，掌握硬件基础</p>
+            <p>老手艺不能忘，祖宗之法不能丢啊！！</p>
+            <p>硬件小玩具也是玩具</p>
           </div>
         </div>
         <div class="content-card">
@@ -45,8 +49,9 @@
             <img src="/可爱小猫.png" alt="可爱电路板">
           </div>
           <div class="text-card">
-            <h1>单片机</h1>
-            <p>学习单片机，学习边缘计算</p>
+            <h1>嵌入式</h1>
+            <p>你为啥学后端了？</p>
+            <p>我绝对不说，我原本是学嵌入式的，被带偏了</p>
           </div>
         </div>
         <div class="content-card">
@@ -55,7 +60,8 @@
           </div>
           <div class="text-card">
             <h1>后端</h1>
-            <p>学习高并发</p>
+            <p>哇~~这何尝不是又一种泼天的流量呢？</p>
+            <p>我接</p>
           </div>
         </div>
         <div class="content-card">
@@ -64,7 +70,8 @@
           </div>
           <div class="text-card">
             <h1>前端</h1>
-            <p>学习界面</p>
+            <p>一名后端开发怎么能不会一点儿前端呢？</p>
+            <p>嘿嘿，我的最爱，写小工具可方便了</p>
           </div>
         </div>
       </div>
@@ -79,9 +86,8 @@
 .background-box {
   height: 100vh;
 
-  background-image: url(/星空.png);
-  /* background-color: rgb(50, 49, 49); */
-  background-size: 100% 100%;
+  background-image: url(/初始背景.png);
+  background-size: 100%;
 
   display: flex;
   flex-direction: column;
@@ -89,9 +95,9 @@
   justify-content: center;
 }
 
-.header {
+.header-box {
   background-color: #1d1c1e;
-  height: 5%;
+  height: 40px;
   width: 100%;
 
   color: #fff;
@@ -102,9 +108,7 @@
 }
 
 .header-left {
-  width: 150px;
-
-  /* background-color: aqua; */
+  width: 180px;
 
   display: flex;
   align-items: center;
@@ -112,9 +116,7 @@
 }
 
 .header-right {
-  width: 150px;
-
-  /* background-color: aqua; */
+  width: 180px;
 
   display: flex;
   align-items: center;
@@ -125,8 +127,6 @@
   height: 87%;
   width: 100%;
 
-  padding-top: 15px;
-
   display: flex;
   flex-direction: column;
   
@@ -134,8 +134,6 @@
 
 .introduction-box {
   margin-top: 25px;
-
-  /* background-color: #ded110; */
 
   height: 25%;
   color: #fff;
@@ -151,8 +149,6 @@
   width: 100%;
 
   margin-top: 18px;
-
-  /* background-color: rgba(255, 255, 255, 0.1); */
 
   display: flex;
   align-items: center;
@@ -185,6 +181,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 .foot-box {
   height: 8%;
   width: 100%;
