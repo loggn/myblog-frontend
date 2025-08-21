@@ -1,4 +1,20 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+const list = ref([
+  { id: 1, title: "文章标题一" },
+  { id: 2, title: "文章标题二" },
+  { id: 3, title: "文章标题三" }
+])
+
+const toArticlesDetailPage = (id) => {
+  console.log("文章ID:", id)
+  router.push({ name: 'ArticleDetail', params: { id } })
+}
+
+</script>
 
 <template>
   <div class="background-box">
@@ -42,14 +58,15 @@
         </div>
       </div>
       <div class="body-center">
-        <div class="article-card">
-          文章1
-        </div>
-        <div class="article-card">
-          文章2
-        </div>
-        <div class="article-card">
-          文章3
+        <div 
+          class="article-card" 
+          v-for="item in list" 
+          :key="item.id"
+          @click="toArticlesDetailPage(item.id)"
+        >
+          <p>
+            {{ item.title }}
+          </p>
         </div>
       </div>
       <div class="body-right">
@@ -131,14 +148,17 @@
   display: flex;
   justify-content: center;
 
+  margin-right: 10px;
+
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .body-center {
   height: 90%;
   width: 40%;
 
-  background-color: rgba(48, 47, 46, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
 
   margin-top: 30px;
@@ -169,15 +189,21 @@
 .label-card {
   width: 100%;
   height: 50%;
+
+  margin-left: 20px;
   
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .message-board {
   width: 100%;
   height: 40%;
 
+  margin-left: 20px;
+
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .foot-box {
