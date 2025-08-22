@@ -1,16 +1,49 @@
 <script setup>
-import { ref } from "vue"
-import { useRouter } from "vue-router"
+import { ref, computed, onMounted } from "vue"
+import { useRouter, useRoute } from "vue-router"
 
 const router = useRouter()
-const list = ref([
-  { id: 1, title: "文章标题一" },
-  { id: 2, title: "文章标题二" },
-  { id: 3, title: "文章标题三" }
+const classes = ref([
+  { id:1, title: "硬件" },
+  { id:2, title: "嵌入式"},
+  { id:3, title: "后端"},
+  { id:4, title: "前端"}
 ])
+const list = ref([
+  { id: 1, class_id: 1, title: "硬件基础笔记" },
+  { id: 2, class_id: 1, title: "基础电路" },
+  { id: 3, class_id: 1, title: "数电基础" },
+  { id: 4, class_id: 1, title: "示波器使用常识" },
+  { id: 5, class_id: 2, title: "嵌入式小项目" },
+  { id: 6, class_id: 2, title: "ROTS" },
+  { id: 7, class_id: 2, title: "串口协议" },
+  { id: 8, class_id: 3, title: "go语言基础" },
+  { id: 9, class_id: 3, title: "搭建高并发服务器流程记录" },
+  { id: 10, class_id: 4, title: "随手记" },
+  { id: 11, class_id: 4, title: "软件小项目" },
+  { id: 12, class_id: 4, title: "前端常识" },
+])
+// 当前选中的分类 id，默认第一个分类
+const selectedClassId = ref(classes.value[0].id)
+
+const route = useRoute()
+// 页面挂载时，看路由有没有传 id
+onMounted(() => {
+  if (route.query.id) {
+    selectedClassId.value = Number(route.query.id)
+  }
+})
+
+// 过滤后的文章列表
+const filteredList = computed(() => {
+  return list.value.filter(item => item.class_id === selectedClassId.value)
+})
+
+const selectClass = (id) => {
+  selectedClassId.value = id
+}
 
 const toArticlesDetailPage = (id) => {
-  console.log("文章ID:", id)
   router.push({ name: 'ArticleDetail', params: { id } })
 }
 
@@ -44,23 +77,20 @@ const toArticlesDetailPage = (id) => {
     </div>
     <div class="body-box">
       <div class="body-left">
-        <div class="content-card">
-          <h1>类别1</h1>
-        </div>
-        <div class="content-card">
-          <h1>类别2</h1>
-        </div>
-        <div class="content-card">
-          <h1>类别3</h1>
-        </div>
-        <div class="content-card">
-          <h1>类别4</h1>
+        <div 
+          class="content-card"
+          v-for="v in classes"
+          :key="v.id"
+          @click="selectClass(v.id)"
+          :class="{ active: selectedClassId === v.id }"
+        >
+          <h1>{{ v.title }}</h1>
         </div>
       </div>
       <div class="body-center">
         <div 
           class="article-card" 
-          v-for="item in list" 
+          v-for="item in filteredList" 
           :key="item.id"
           @click="toArticlesDetailPage(item.id)"
         >
@@ -152,6 +182,13 @@ const toArticlesDetailPage = (id) => {
 
   color: #fff;
   background-color: rgba(0, 0, 0, 0.6);
+
+  cursor: pointer;
+}
+
+.content-card.active {
+  color: #f3c76a;
+  font-weight: bold;
 }
 
 .body-center {

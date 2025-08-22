@@ -1,4 +1,19 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+const classes = ref([
+  { id:1, picture:"/可爱电路板.png", title: "硬件", text1:"老手艺不能忘，祖宗之法不能丢啊！！", text2:"硬件小玩具也是玩具"},
+  { id:2, picture:"/可爱小猫.png", title: "嵌入式", text1:"你为啥学后端了？", text2:"我绝对不说，我原本是学嵌入式的，被带偏了"},
+  { id:3, picture:"/可爱猫猫.png", title: "后端", text1:"哇~~这何尝不是又一种泼天的流量呢？", text2:"我接"},
+  { id:4, picture:"/可爱小狗.png", title: "前端", text1:"一名后端开发怎么能不会一点儿前端呢？", text2:"嘿嘿，我的最爱，写小工具可方便了"}
+])
+
+const toArticlesPage = (id) => {
+  router.push({ name: 'Articles',query: { id: id } })
+}
+</script>
 
 <template>
   <div class="background-box">
@@ -34,44 +49,18 @@
         <p>不对！我是奶龙，嗷呜~~</p>
       </div>
       <div class="class-box">
-        <div class="content-card">
-          <div class="picture-card">
-            <img src="/可爱电路板.png" alt="可爱电路板">
+        <div 
+          class="content-card"
+          v-for="v in classes"
+          :key="v.id"
+        >
+          <div class="picture-card" @click="toArticlesPage(v.id)">
+            <img :src=" v.picture " alt="图片">
           </div>
           <div class="text-card">
-            <h1>硬件</h1>
-            <p>老手艺不能忘，祖宗之法不能丢啊！！</p>
-            <p>硬件小玩具也是玩具</p>
-          </div>
-        </div>
-        <div class="content-card">
-          <div class="picture-card">
-            <img src="/可爱小猫.png" alt="可爱电路板">
-          </div>
-          <div class="text-card">
-            <h1>嵌入式</h1>
-            <p>你为啥学后端了？</p>
-            <p>我绝对不说，我原本是学嵌入式的，被带偏了</p>
-          </div>
-        </div>
-        <div class="content-card">
-          <div class="picture-card">
-            <img src="/可爱猫猫.png" alt="可爱电路板">
-          </div>
-          <div class="text-card">
-            <h1>后端</h1>
-            <p>哇~~这何尝不是又一种泼天的流量呢？</p>
-            <p>我接</p>
-          </div>
-        </div>
-        <div class="content-card">
-          <div class="picture-card">
-            <img src="/可爱小狗.png" alt="可爱电路板">
-          </div>
-          <div class="text-card">
-            <h1>前端</h1>
-            <p>一名后端开发怎么能不会一点儿前端呢？</p>
-            <p>嘿嘿，我的最爱，写小工具可方便了</p>
+            <h1>{{ v.title }}</h1>
+            <p>{{ v.text1 }}</p>
+            <p>{{ v.text2 }}</p>
           </div>
         </div>
       </div>

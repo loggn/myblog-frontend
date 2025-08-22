@@ -16,13 +16,23 @@ const router = createRouter({
   routes
 })
 
+// let first = true
+// // eslint-disable-next-line no-unused-vars
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/' && first) {
+//     first = false
+//     next('/start')
+//   } else {
+//     next()
+//   }
+// })
+
 let first = true
-router.beforeEach((to, from, next) => {
-  if (to.path === '/' && first) {
+// eslint-disable-next-line no-unused-vars
+router.beforeEach((to) => {
+  if (first) {
     first = false
-    next('/start')
-  } else {
-    next()
+    return { path: '/start' }
   }
 })
 
