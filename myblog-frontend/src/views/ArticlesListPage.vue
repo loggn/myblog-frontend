@@ -1,46 +1,54 @@
 <script setup>
-import { ref, computed, onMounted } from "vue"
+import { ref, onMounted } from "vue"
 import { useRouter, useRoute } from "vue-router"
-
-const router = useRouter()
-const classes = ref([
-  { id:1, title: "硬件" },
-  { id:2, title: "嵌入式"},
-  { id:3, title: "后端"},
-  { id:4, title: "前端"}
-])
-const list = ref([
-  { id: 1, class_id: 1, title: "硬件基础笔记" },
-  { id: 2, class_id: 1, title: "基础电路" },
-  { id: 3, class_id: 1, title: "数电基础" },
-  { id: 4, class_id: 1, title: "示波器使用常识" },
-  { id: 5, class_id: 2, title: "嵌入式小项目" },
-  { id: 6, class_id: 2, title: "ROTS" },
-  { id: 7, class_id: 2, title: "串口协议" },
-  { id: 8, class_id: 3, title: "go语言基础" },
-  { id: 9, class_id: 3, title: "搭建高并发服务器流程记录" },
-  { id: 10, class_id: 4, title: "随手记" },
-  { id: 11, class_id: 4, title: "软件小项目" },
-  { id: 12, class_id: 4, title: "前端常识" },
-])
-// 当前选中的分类 id，默认第一个分类
-const selectedClassId = ref(classes.value[0].id)
+import axios from "axios"
 
 const route = useRoute()
-// 页面挂载时，看路由有没有传 id
-onMounted(() => {
+const router = useRouter()
+const classes = ref([])
+const list = ref([])
+// 当前选中的分类 id，默认第一个分类
+const selectedClassId = ref(null)
+
+// 页面挂载时：请求分类、文章
+onMounted(async () => {
+  await fetchClasses()
   if (route.query.id) {
     selectedClassId.value = Number(route.query.id)
+    await fetchArticles(selectedClassId.value)
   }
 })
 
-// 过滤后的文章列表
-const filteredList = computed(() => {
-  return list.value.filter(item => item.class_id === selectedClassId.value)
-})
+async function fetchClasses() {
+  try {
+    const res = await axios.get("http://localhost:8080/api/classes")
+    if (res.data.code === 200) {
+      classes.value = res.data.data
+      // 如果没有路由参数，默认选第一个分类
+      if (!selectedClassId.value && classes.value.length > 0) {
+        selectedClassId.value = classes.value[0].id
+        await fetchArticles(selectedClassId.value)
+      }
+    }
+  } catch (err) {
+    console.error("获取分类失败:", err)
+  }
+}
 
-const selectClass = (id) => {
+async function fetchArticles(classId) {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/articles/class/${classId}`)
+    if (res.data.code === 200) {
+      list.value = res.data.data
+    }
+  } catch (err) {
+    console.error("获取文章失败:", err)
+  }
+}
+
+const selectClass = async (id) => {
   selectedClassId.value = id
+  await fetchArticles(id)
 }
 
 const toArticlesDetailPage = (id) => {
@@ -90,7 +98,7 @@ const toArticlesDetailPage = (id) => {
       <div class="body-center">
         <div 
           class="article-card" 
-          v-for="item in filteredList" 
+          v-for="item in list" 
           :key="item.id"
           @click="toArticlesDetailPage(item.id)"
         >
@@ -186,6 +194,10 @@ const toArticlesDetailPage = (id) => {
   cursor: pointer;
 }
 
+.content-card:hover {
+  transform: scale(1.1);
+}
+
 .content-card.active {
   color: #f3c76a;
   font-weight: bold;
@@ -210,6 +222,13 @@ const toArticlesDetailPage = (id) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  
+  cursor: pointer;
+}
+
+.article-card:hover p {
+  color: #ffeb3b;
+  font-size: 1.2em;
 }
 
 .body-right {

@@ -1,14 +1,21 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
+import axios from "axios"
 
 const router = useRouter()
-const classes = ref([
-  { id:1, picture:"/可爱电路板.png", title: "硬件", text1:"老手艺不能忘，祖宗之法不能丢啊！！", text2:"硬件小玩具也是玩具"},
-  { id:2, picture:"/可爱小猫.png", title: "嵌入式", text1:"你为啥学后端了？", text2:"我绝对不说，我原本是学嵌入式的，被带偏了"},
-  { id:3, picture:"/可爱猫猫.png", title: "后端", text1:"哇~~这何尝不是又一种泼天的流量呢？", text2:"我接"},
-  { id:4, picture:"/可爱小狗.png", title: "前端", text1:"一名后端开发怎么能不会一点儿前端呢？", text2:"嘿嘿，我的最爱，写小工具可方便了"}
-])
+const classes = ref()
+
+onMounted(async () => {
+  try {
+    const res = await axios.get("http://localhost:8080/api/classes")
+    if (res.data.code === 200) {
+      classes.value = res.data.data
+    }
+  } catch (err) {
+    console.error("获取分类失败:", err)
+  }
+})
 
 const toArticlesPage = (id) => {
   router.push({ name: 'Articles',query: { id: id } })
@@ -59,8 +66,7 @@ const toArticlesPage = (id) => {
           </div>
           <div class="text-card">
             <h1>{{ v.title }}</h1>
-            <p>{{ v.text1 }}</p>
-            <p>{{ v.text2 }}</p>
+            <p v-html="v.text"></p>
           </div>
         </div>
       </div>
@@ -147,6 +153,15 @@ const toArticlesPage = (id) => {
 .content-card {
   height: 80%;
   width: 21%;
+  
+  /* 光标变成手手 */
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
+}
+
+.content-card:hover {
+  transform: scale(1.1);
 }
 
 .picture-card {
