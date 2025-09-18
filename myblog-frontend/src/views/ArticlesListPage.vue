@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { useRouter, useRoute } from "vue-router"
-import axios from "axios"
+import { getArticlesClass, getClasses } from "@/utils/api"
 
 const route = useRoute()
 const router = useRouter()
@@ -21,7 +21,7 @@ onMounted(async () => {
 
 async function fetchClasses() {
   try {
-    const res = await axios.get("http://47.122.85.83:8080/api/classes")
+    const res = await getClasses()
     if (res.data.code === 200) {
       classes.value = res.data.data
       // 如果没有路由参数，默认选第一个分类
@@ -37,7 +37,7 @@ async function fetchClasses() {
 
 async function fetchArticles(classId) {
   try {
-    const res = await axios.get(`http://localhost:8080/api/articles/class/${classId}`)
+    const res = await getArticlesClass(classId)
     if (res.data.code === 200) {
       list.value = res.data.data
     }

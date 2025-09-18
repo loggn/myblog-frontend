@@ -1,14 +1,14 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
-import axios from "axios"
+import { getClasses } from "@/utils/api"
 
 const router = useRouter()
 const classes = ref()
 
 onMounted(async () => {
   try {
-    const res = await axios.get("http://47.122.85.83:8080/api/classes")
+    const res = await getClasses()
     if (res.data.code === 200) {
       classes.value = res.data.data
     }
