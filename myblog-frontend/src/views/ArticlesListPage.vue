@@ -21,7 +21,7 @@ onMounted(async () => {
 
 async function fetchClasses() {
   try {
-    const res = await axios.get("http://localhost:8080/api/classes")
+    const res = await axios.get("http://47.122.85.83:8080/api/classes")
     if (res.data.code === 200) {
       classes.value = res.data.data
       // 如果没有路由参数，默认选第一个分类

@@ -8,7 +8,7 @@ const classes = ref()
 
 onMounted(async () => {
   try {
-    const res = await axios.get("http://localhost:8080/api/classes")
+    const res = await axios.get("http://47.122.85.83:8080/api/classes")
     if (res.data.code === 200) {
       classes.value = res.data.data
     }
